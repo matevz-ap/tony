@@ -9,6 +9,9 @@ intents = discord.Intents.default()
 client = discord.Client(intents=intents)
 tree = app_commands.CommandTree(client)
 
+TOKEN = os.getenv("DISCORD_TOKEN")
+GUILD_ID = os.getenv("DISCORD_GUILD_ID")
+
 
 def get_menu(date: str):
     dishes = get_menu_dishes(date)
@@ -22,7 +25,7 @@ def get_menu(date: str):
 @tree.command(
     name="menu",
     description="Get Slorest daily menu. Optionally provide a date in the format YYYY-MM-DD.",
-    guild=discord.Object(id=1158479972848115794),
+    guild=discord.Object(id=GUILD_ID),
 )
 async def menu(ctx, date: str = ""):
     if not date:
@@ -35,10 +38,8 @@ async def menu(ctx, date: str = ""):
 
 @client.event
 async def on_ready():
-    await tree.sync(guild=discord.Object(id=1158479972848115794))
+    await tree.sync(guild=discord.Object(id=GUILD_ID))
     print("Ready!")
 
-
-TOKEN = os.getenv("DISCORD_TOKEN")  # Replace with your actual token
 
 client.run(TOKEN)

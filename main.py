@@ -18,7 +18,7 @@ def get_menu(date: str):
     menu_items = []
     for dish in dishes:
         nutrients = get_nutrients(dish["slug"])
-        menu_items.append([dish["title"][:30]] + nutrients)
+        menu_items.append([dish["title"][:35]] + nutrients)
     return menu_items
 
 

@@ -41,7 +41,8 @@ def get_menu_dishes(date: str) -> list[str]:
     except requests.HTTPError as e:
         print(e)
         return []
-    return response.json()["dnevna"]
+    data = response.json()
+    return data["dnevna"] + data.get("priporocamo", [])
 
 
 def get_nutrients(food: str) -> list:

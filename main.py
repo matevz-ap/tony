@@ -1,4 +1,5 @@
 import os
+import asyncio
 import discord
 from discord import app_commands
 import datetime as dt
@@ -28,12 +29,14 @@ def get_menu(date: str):
     guild=discord.Object(id=GUILD_ID),
 )
 async def menu(ctx, date: str = ""):
+    await ctx.response.defer(thinking=True)
+
     if not date:
         date = dt.date.today().isoformat()
 
-    menu_items = get_menu(date)
+    menu_items = await asyncio.to_thread(get_menu, date)
     title = "### Menu for " + date + ":\n"
-    await ctx.response.send_message(title + table(menu_items))
+    await ctx.followup.send(title + table(menu_items))
 
 
 @client.event
@@ -42,4 +45,5 @@ async def on_ready():
     print("Ready!")
 
 
-client.run(TOKEN)
+if __name__ == "__main__":
+    client.run(TOKEN)
